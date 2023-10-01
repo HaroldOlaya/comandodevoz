@@ -2,6 +2,9 @@ import requests
 from datetime import datetime
 import speech_recognition as sr
 import pyttsx3
+import webbrowser
+import time
+import pyautogui
 
 
 def responder(frase):
@@ -15,6 +18,22 @@ def oir(opcion):
     text = convertirMayus(text)
     textOido(text)
     return text
+def musica():
+    responder("Que desea hacer señor")
+    parametro=oir("Que desea hacer señor: ")
+    if parametro == "REPRODUCIR":
+        responder("Nombre de la cancion")
+        nombre=oir("Nombre de la cancion: ")
+        responder("Nombre del compositor")
+        cantante=oir("Nombre del compositor: ")
+        busqueda_url = f'https://www.youtube.com/results?search_query={nombre+cantante}'
+        webbrowser.open(busqueda_url)
+        responder("Ya la tiene en pantalla señor")
+    elif parametro == "CERRAR PESTAÑA":
+        responder("cerrando pestaña")
+        pyautogui.hotkey('ctrl', 'w')
+
+
 def textOido(text):
     print(f"Texto reconocido: {text}")
 
@@ -88,6 +107,9 @@ while iniciar:
                         responder(tiempoActual)
                     elif text =="SALUDA":
                         responder("HOLA SOY VIERNES TU AYUDANTE VIRTUAL")
+                    elif text == "MÚSICA":
+                        musica()
+
     except sr.UnknownValueError:
         print("No se pudo entender el audio.")
     except sr.RequestError as e:
